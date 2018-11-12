@@ -1,6 +1,7 @@
+var express = require('express');
 const router = express.Router();
 const sha = require('sha256');
-const db = require('./db.js').sql; //only query import
+const db = require('../lib/db.js').sql; //only query import
 module.exports = function (app) {
 
     const bodyParser = require('body-parser');
@@ -9,22 +10,23 @@ module.exports = function (app) {
     }));
     app.use(bodyParser.json());
 
-    const passport = require('./passport.js')(app); //passport 사용
+    const passport = require('../lib/passport.js')(app); //passport 사용
+    router.get('/',(req,res)=>{
+        res.render('auth', { title: 'Express' });
 
-    router.post('/login', passport.authenticate('local'), function (request, response) {
-        if (!request.user) {
-            return response.status(400).redirect('/login');
-        } else request.logIn(request.user, function (err) {
-            console.log("logged in!");
-            return response.redirect('/');
-        });
-    });
+    })
+    router.post('/login',
+        passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/login'
+        })
+    );
     router.post('/register', function (request, response) { //name= {id , password , email} 으로 받음 
         const post = request.body;
-	console.log(post);
+        console.log(post);
         console.log(post.id);
-	console.log(post.password);
-	var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz!@#$%^&*()";
+        console.log(post.password);
+        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz!@#$%^&*()";
         var string_length = 15;
         var salt = '';
         db.query('SELECT id FROM auth_local WHERE id=?', post.id, function (err, result) {

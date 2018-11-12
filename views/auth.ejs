@@ -76,8 +76,12 @@
 					<div class="col-md-8 col-md-offset-3 text-center">
 						<div class="dt js-height">
 							<div class="dtc animate-box">
-								<h2 class="gradient-text"># Like it!</h2>
-								<p><a href="/auth" class="btn btn-gradient">Log in</a><a href="/auth/register" class="btn btn-gradient">Join Us</a></p>
+                                <h2 class="gradient-text"># Like it!</h2>
+                                <form action="/auth/login" method="post" >
+                                    <input type = "text" name="id" placeholder="아이디"><br>
+                                    <input type = "text" name="password" placeholeder="비밀번호">
+                                    <input type ="submit" value="로그인">
+                                </form>
 							</div>
 						</div>
 					</div>
@@ -85,88 +89,13 @@
 			</div>
 		</div>
 
-		<div id="gtco-project">
-			<div class="container">
-				<div class="row row-pb-md">
-					<div class="col-md-7">
-						<h3>카테고리</h3>
-						<p class="desc">좋아하는 분야 선택</p>
-					</div>
-				</div>
-				<div class="row row-pb-md">
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/sports"><img src="images/sports.jpg" alt="sports" class="img-responsive">
-							<h3>Fancy 3D Letter Effect</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/games"><img src="images/game.jpg" alt="game" class="img-responsive">
-							<h3>Hard Cover A5 Format</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/fashion"><img src="images/fashion.jpg" alt="fasion" class="img-responsive">
-							<h3>Notepad Mockup</h3>
-						</a>
-					</div>
-
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/show"><img src="images/show.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Hard Cover A5 Format</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/love"><img src="images/love.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Notepad Mockup</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/car"><img src="images/car.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Paper Hot Cup</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/food"><img src="images/food.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Notepad Mockup</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/movies"><img src="images/movie.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Notepad Mockup</h3>
-						</a>
-					</div>
-
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/books"><img src="images/books.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Notepad Mockup</h3>
-						</a>
-					</div>
-
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/entertain"><img src="images/entertain.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Paper Hot Cup</h3>
-						</a>
-					</div>
-					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
-						<a href="/contents/music"><img src="images/music.jpg" alt="Free HTML5 Website Template by FreeHTML5.co" class="img-responsive">
-							<h3>Fancy 3D Letter Effect</h3>
-						</a>
-					</div>
-					<div class="row">
-						<div class="col-md-12 text-center">
-							<a href="/contents/show" class="btn btn-gradient gtco-load"><i class="ti-reload"></i>All</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
 
 			<footer id="fh5co-footer">
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
 							<div class="fh5co-footer-widget">
-								LiKEIT <sup>&trade;</sup>&copy; All Rights Reserved. <br> Hwan-Seok Kang
+								LiKEIT <sup>&trade;</sup>&copy; All Rights Reserved.<br>Hwan-Seok Kang
 							</div>
 						</div>
 						<div class="col-md-3 col-md-push-1">
@@ -191,6 +120,7 @@
 		<div class="gototop js-top">
 			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 		</div>
+
 		<!-- jQuery -->
 		<script src="js/jquery.min.js"></script>
 		<!-- jQuery Easing -->

@@ -60,16 +60,35 @@
 
 				<div class="row">
 					<div class="col-sm-2 col-xs-2">
-						<div id="gtco-logo">LikeIt<sup>&trade;</sup></div>
+						<div id="gtco-logo"><a href="/">LikeIt<sup>&trade;</sup></a> </div>
+						
 					</div>
+					<%if(main){%>
+					<div class="col-sm-3 col-xs-3">
+						<div id="gra"><%=main.nickname%> <a href="/auth/logout">로그아웃</a> </div>
+						
+					</div>
+					<%}%>
+					<%if(main){%>
+					<div class="col-xs-7 text-right fh5co-top-social">
+					<%}else{%>
 					<div class="col-xs-10 text-right fh5co-top-social">
+					<%}%>
 						Made by KHS
+						<ul class="gtco-social">
+							<li><a href="https://www.facebook.com/profile.php?id=100006310957929" class="icon-facebook"></a></li>
+						</ul>
 					</div>
 				</div>
 
 			</div>
 		</nav>
-
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		var socket=io();
+		socket.emit("chat","lalalala");
+		</script>
+		<%if(!main){%>
 		<div id="gtco-intro">
 			<div class="container">
 				<div class="row">
@@ -84,7 +103,7 @@
 				</div>
 			</div>
 		</div>
-
+		<%}%>
 		<div id="gtco-project">
 			<div class="container">
 				<div class="row row-pb-md">
@@ -99,6 +118,7 @@
 							<h3>Fancy 3D Letter Effect</h3>
 						</a>
 					</div>
+					<input type="button" onclick="socket.emit(`chat`,`lala`)">
 					<div class="col-md-4 col-sm-4 col-xs-6 fh5co-project animate-box">
 						<a href="/contents/games"><img src="images/game.jpg" alt="game" class="img-responsive">
 							<h3>Hard Cover A5 Format</h3>

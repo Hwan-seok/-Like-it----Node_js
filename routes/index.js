@@ -1,9 +1,31 @@
 var express = require('express');
 var router = express.Router();
-
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+module.exports = (io) => {
 
-module.exports = router;
+
+  router.get('/', function (req, res, next) {
+    const main = req.user
+    console.log(req.user);
+    res.render('index', {
+      main
+    });
+  });
+  
+  io.on('connection', (socket) => {
+    socket.on('chat', (data) => {
+      
+      console.log('chat received',socket.id, data) 
+      msg = {
+        from: {
+          id: "id",
+          userid: "userid"
+        },
+        msg: data.msg
+      }; //msg
+      socket.emit('chat', msg);
+    });
+  })
+
+   return router;
+}

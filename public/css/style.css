@@ -118,7 +118,7 @@ h1, h2, h3, h4, h5, h6, figure {
 .gtco-nav #gtco-logo a {
   color: #000;
 }
-.gtco-nav #gtco-logo em {
+.gtco-nav #gtco-logo gradient-text {
   color: #fff;
 }
 @media screen and (max-width: 768px) {
@@ -309,7 +309,10 @@ h1, h2, h3, h4, h5, h6, figure {
   display: table-cell;
   vertical-align: middle;
 }
-
+#gra{
+  font-size:15px;
+  background: linear-gradient(top right, #f0ad4e, #f0ad4e);
+}
 .gradient-text {
   background: -webkit-linear-gradient(top right, #52D681, #1FDEDB);
   background: -webkit-gradient(linear, right top, left bottom, from(#52D681), to(#1FDEDB));

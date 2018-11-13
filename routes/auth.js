@@ -1,18 +1,23 @@
 var express = require('express');
 const router = express.Router();
 const sha = require('sha256');
-const db = require('../lib/db.js').sql; //only query import
-module.exports = function (app) {
+const db = require('../lib/db.js'); 
+module.exports = (app) => {
 
-    const bodyParser = require('body-parser');
-    app.use(bodyParser.urlencoded({
-        extended: false
-    }));
-    app.use(bodyParser.json());
+    // const bodyParser = require('body-parser');
+    // app.use(bodyParser.urlencoded({
+    //     extended: false
+    // }));
+    // app.use(bodyParser.json());
 
     const passport = require('../lib/passport.js')(app); //passport 사용
+  
+    router.get('/register',(req,res)=>{
+        res.render('auth', {register:true});
+
+    })
     router.get('/',(req,res)=>{
-        res.render('auth', { title: 'Express' });
+        res.render('auth', {register:false});
 
     })
     router.post('/login',
@@ -21,11 +26,8 @@ module.exports = function (app) {
             failureRedirect: '/login'
         })
     );
-    router.post('/register', function (request, response) { //name= {id , password , email} 으로 받음 
+    router.post('/register', function (request, response) { //name= {id , password , nickname} 으로 받음 
         const post = request.body;
-        console.log(post);
-        console.log(post.id);
-        console.log(post.password);
         var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz!@#$%^&*()";
         var string_length = 15;
         var salt = '';
@@ -40,7 +42,7 @@ module.exports = function (app) {
                     var rnum = Math.floor(Math.random() * chars.length);
                     salt += chars.substring(rnum, rnum + 1);
                 }
-                db.query("INSERT INTO auth_local values(?,?,?,?)", [post.id, sha(post.password + salt), post.email, salt], function (err) {
+                db.query("INSERT INTO auth_local values(?,?,?,?)", [post.id, sha(post.password + salt), post.nickname, salt], function (err) {
                     request.login(post, function (err) {
                         request.session.save(function () {
                             return response.redirect('/');
@@ -56,7 +58,6 @@ module.exports = function (app) {
     });
     router.get('/kakao', passport.authenticate('kakao'));
     router.get('/kakao/callback', passport.authenticate('kakao'), function (request, response) {
-        console.log(request);
         if (!request.user) {
             console.log("kakao_Wrong credentials");
             return response.status(400).json({

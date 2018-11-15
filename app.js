@@ -1,15 +1,18 @@
-var createError = require('http-errors');
-var express = require('express');
-var app = express();
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const WebSocket = require('./socket');
-const server= require('http').createServer(app);
-const io = require('socket.io')(server);
-var indexRouter = require('./routes/index')(io);
-var authRouter = require('./routes/auth')(app);
+const createError = require('http-errors'),
+express = require('express'),
+app = express(),
+path = require('path'),
+cookieParser = require('cookie-parser'),
+logger = require('morgan'),
+server= require('http').createServer(app),
+indexRouter = require('./routes/index'),
+authRouter = require('./routes/auth')(app),
+io= require('socket.io')(server),
+SOCKETIO=require('./lib/socketio.js')(io);
 
+io.on('connection', (socket) => {
+  console.log("qeqrewrqwerqwefdsfasdfas@@@@@@@@@@@@@@@@@@@@@@@@");
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -24,12 +27,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
+io.use(SOCKETIO);
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development

@@ -13,10 +13,12 @@ module.exports = (app) => {
     const passport = require('../lib/passport.js')(app); //passport 사용
   
     router.get('/register',(req,res)=>{
+        console.log(app.mount);
         res.render('auth', {register:true});
 
     })
     router.get('/',(req,res)=>{
+        console.log(req.url);
         res.render('auth', {register:false});
 
     })

@@ -7,31 +7,30 @@ logger = require('morgan'),
 server= require('http').createServer(app),
 indexRouter = require('./routes/index'),
 authRouter = require('./routes/auth')(app),
-io= require('socket.io')(server),
-SOCKETIO=require('./lib/socketio.js')(io);
+re = require('./routes/re')(app),
+SOCKETIO=require('./lib/socketio.js');
 
-io.on('connection', (socket) => {
-  console.log("qeqrewrqwerqwefdsfasdfas@@@@@@@@@@@@@@@@@@@@@@@@");
-});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/',express.static(path.join(__dirname, 'public')));
+app.use('/auth',express.static(path.join(__dirname, 'public')));
+app.use('/category',express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use('/re', re);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
-io.use(SOCKETIO);
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -44,4 +43,6 @@ app.use(function (err, req, res, next) {
 });
 
 server.listen(80);
+SOCKETIO(server);
+
 module.exports = app;

@@ -7,7 +7,6 @@ logger = require('morgan'),
 server= require('http').createServer(app),
 indexRouter = require('./routes/index'),
 authRouter = require('./routes/auth')(app),
-re = require('./routes/re')(app),
 SOCKETIO=require('./lib/socketio.js');
 
 // view engine setup
@@ -22,11 +21,10 @@ app.use(cookieParser());
 
 app.use('/',express.static(path.join(__dirname, 'public')));
 app.use('/auth',express.static(path.join(__dirname, 'public')));
-app.use('/category',express.static(path.join(__dirname, 'public')));
+app.use('/contents/:category/page',express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
-app.use('/re', re);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

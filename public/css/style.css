@@ -512,6 +512,12 @@ h1, h2, h3, h4, h5, h6, figure {
   background: #f7f7f7;
   font-size: 20px;
 }
+#fh5co-footering {
+  padding: 1em 0;
+  font-size: 16px !important;
+  background: #f7f7f7;
+  font-size: 20px;
+}
 #fh5co-footer a, #fh5co-footer p {
   font-size: 16px !important;
 }

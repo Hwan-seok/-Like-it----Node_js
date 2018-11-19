@@ -11,18 +11,21 @@ Socket.io를 이용한 관심분야 단체 채팅방 연결 서비스
     4. view 폴더에 실제 렌더링하는 ejs 파일들 존재
 ### __pages__
 
-* 메인 : ![main]('/public/images/main.png')
+* 메인 : ![main](public/images/main.png)
 
 
         1. 로그인이 필요 없으며 로그인 하면 메인 페이지가 바뀝니다.
                      
-        2. 카테고리를 열람할 수 있으며 선택할경우 해당 관심분야들이 모여있는 방목록으로 이동합니다.
+        2. 카테고리를 열람할 수 있으며 로그인된 사용자가 선택할경우 해당 관심분야들이 모여있는 방목록으로 이동합니다.
                   
-* 관심분야 방목록 : ![rooms]('/public/images/rooms.png')
+* 관심분야 목록 : ![category](public/images/category.png)
+        * 로그인할 경우 메인 화면에 표기되며 사진을 선택하면 관심분야 방목록으로 이동합니다.
+
+* 관심분야 방목록 : ![rooms](public/images/rooms.png)
 
         * 방 번호, 제목, 주인, 세부 관심사를 표기하며 각 행을 누르면 채팅방으로 입장합니다.
 
-* 채팅방 : ![chat]('/public/images/chat.png')
+* 채팅방 : ![chat](public/images/chat.png)
 
         1. 채팅방에서 socket.io를 사용하여 실시간으로 관심분야가 같은 사람들끼리 채팅을 할 수 있습니다.
 

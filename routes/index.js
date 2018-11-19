@@ -35,12 +35,22 @@ router.get('/contents/:category/page/:page', authCheck, (req, res) => {
   })
 })
 router.get('/contents/:category/room/:room', authCheck, (req, res) => {
-  if (!req.user)
-    res.redirect('/auth');
-  else {
-    res.render('index', {
+  const sql="SELECT * FROM rooms WHERE num=?";
+  db.query(sql,[req.params.rooms],(err,romm_Info)=>{
 
+  })
+  
+
+  const who="KANG";
+  const time="3시";
+  const chat="lalalalal";
+  const img="/images/user.gif";
+    res.render('chat', {
+      main:req.user,
+      who,
+      time,
+      chat,
+      img
     })
-  }
 })
 module.exports = router;

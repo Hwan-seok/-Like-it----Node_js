@@ -1,0 +1,267 @@
+<!DOCTYPE HTML>
+<!--
+	Aesthetic by gettemplates.co
+	Twitter: http://twitter.com/gettemplateco
+	URL: http://gettemplates.co
+-->
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>#Like it</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Website Template by gettemplates.co" />
+	<meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
+	<meta name="author" content="gettemplates.co" />
+
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="" />
+	<meta property="og:image" content="" />
+	<meta property="og:url" content="" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:description" content="" />
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
+
+	<!-- <link href="https://fonts.googleapis.com/css?family=Merriweather:300,400|Montserrat:400,700" rel="stylesheet"> -->
+
+	<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+
+	<!-- Animate.css -->
+	<link rel="stylesheet" href="css/animate.css">
+	<!-- Icomoon Icon Fonts-->
+	<link rel="stylesheet" href="css/icomoon.css">
+	<!-- Themify Icons-->
+	<link rel="stylesheet" href="css/themify-icons.css">
+	<!-- Bootstrap  -->
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<!-- Theme style  -->
+	<link rel="stylesheet" href="css/style.css">
+
+	<!-- Modernizr JS -->
+	<script src="js/modernizr-2.6.2.min.js"></script>
+	<!-- FOR IE9 below -->
+	<!--[if lt IE 9]>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+
+	<div class="gtco-loader"></div>
+
+	<div id="page">
+		<nav class="gtco-nav" role="navigation">
+			<div class="container">
+
+				<div class="row">
+					<div class="col-sm-2 col-xs-2">
+						<div id="gtco-logo"><a href="/">LikeIt<sup>&trade;</sup></a> </div>
+
+					</div>
+					<%if(main){%>
+					<div class="col-sm-3 col-xs-3">
+						<div id="gra">
+							<%=main.nickname%> <a href="/auth/logout">로그아웃</a> </div>
+
+					</div>
+					<%}%>
+					<%if(main){%>
+					<div class="col-xs-7 text-right fh5co-top-social">
+						<%}else{%>
+						<div class="col-xs-10 text-right fh5co-top-social">
+							<%}%>
+							Made by KHS
+							<ul class="gtco-social">
+								<li><a href="https://www.facebook.com/profile.php?id=100006310957929" class="icon-facebook"></a></li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+		</nav>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			var socket = io();
+			socket.emit("chat", "lalalala");
+		</script>
+		<div class="container">
+			<div class="row " style="padding-top:40px;">
+				<h3 class="text-center">NAME </h3>
+				<br /><br />
+				<div class="col-md-8">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							CHAT
+						</div>
+						<div class="panel-body">
+							<ul class="media-list">
+							<script>
+									var chating =(who,time,chat,img_src)=>{
+									var li = document.createElement('li');
+									li.className = "media";
+
+									var div = document.createElement('div');
+									div.className = "media-body";
+									li.appendChild(div);
+
+									var div2 = document.createElement('div');
+									div2.className = "media";
+									div.appendChild(div2);
+
+									var a = document.createElement('a');
+									a.className = "pull-left";
+									a.href = "sdfg";
+									var img = document.createElement('img');
+									img.classList.add("media-object", "img-circle");
+									img.src = img_src;
+
+									a.appendChild(img);
+									div2.appendChild(a);
+
+									var div3 = document.createElement('div');
+									div3.className = "media-body";
+									div3.textContent = chat;
+									var br = document.createElement('br');
+									div3.appendChild(br);
+
+									var small = document.createElement('small');
+									small.className = "text-muted";
+									small.textContent = `${who} | ${time}`;
+
+									var hr = document.createElement('hr');
+
+									div3.appendChild(small);
+									div3.appendChild(hr);
+
+									div2.appendChild(div3);
+
+									var list = document.getElementsByClassName("media-list");
+									list[0].appendChild(li);
+									}
+								chating("<%=who%>","<%=time%>","<%=chat%>","<%=img%>");
+								</script>
+							</ul>
+						</div>
+						<div class="panel-footer">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Enter Message" />
+								<span class="input-group-btn">
+									<button class="btn btn-info" type="button">SEND</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-4">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							ONLINE USERS
+						</div>
+						<div class="panel-body">
+							<ul class="media-list dd">
+
+								<script>
+									var users=(who,img_src)=>{
+									var li_ = document.createElement('li');
+									li_.className = "media";
+
+									var div_ = document.createElement('div');
+									div_.className = "media-body";
+									li_.appendChild(div_);
+
+									var div2_ = document.createElement('div');
+									div2_.className = "media";
+									div_.appendChild(div2_);
+
+									var a_ = document.createElement('a');
+									a_.className = "pull-left";
+									a_.href = "sdfg";
+									var img_ = document.createElement('img');
+									img_.style.maxHeight = "40px";
+									img_.classList.add("media-object", "img-circle");
+									img_.src = img_src;
+
+									a_.appendChild(img_);
+									div2_.appendChild(a_);
+
+									var div3_ = document.createElement('div');
+									div3_.className = "media-body";
+
+									var h5_ = document.createElement('h5');
+									h5_.textContent = `${who}|`;
+
+									var small_ = document.createElement('small');
+									small_.className = "text-muted";
+									small_.textContent = "Active From 3 hours";
+
+									div3_.appendChild(h5_);
+									div3_.appendChild(small_);
+
+									div2_.appendChild(div3_);
+
+									var list_ = document.getElementsByClassName("dd");
+									list_[0].appendChild(li_);
+									}
+									users("<%=who%>","<%=img%>");
+								</script>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div id="gtco-project">
+
+
+			<footer id="fh5co-footering">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="fh5co-footer-widget">
+								LiKEIT <sup>&trade;</sup>&copy; All Rights Reserved. <br> Hwan-Seok Kang
+							</div>
+						</div>
+						<div class="col-md-3 col-md-push-1">
+							<div class="fh5co-footer-widget">
+								<p>010 6430 6352 <br>tttkhs@khu.ac.kr</p>
+							</div>
+						</div>
+						<div class="col-md-4 col-md-push-1">
+							<div class="fh5co-footer-widget gtco-social-wrap">
+								<ul class="gtco-social">
+									<li><a href="https://www.facebook.com/profile.php?id=100006310957929" class="icon-facebook"></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+
+
+		</div>
+
+		<div class="gototop js-top">
+			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
+		</div>
+		<!-- jQuery -->
+		<script src="js/jquery.min.js"></script>
+		<!-- jQuery Easing -->
+		<script src="js/jquery.easing.1.3.js"></script>
+		<!-- Bootstrap -->
+		<script src="js/bootstrap.min.js"></script>
+		<!-- Waypoints -->
+		<script src="js/jquery.waypoints.min.js"></script>
+
+		<!-- Main -->
+		<script src="js/main.js"></script>
+
+</body>
+
+</html>

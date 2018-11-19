@@ -22,6 +22,7 @@ app.use(cookieParser());
 app.use('/',express.static(path.join(__dirname, 'public')));
 app.use('/auth',express.static(path.join(__dirname, 'public')));
 app.use('/contents/:category/page',express.static(path.join(__dirname, 'public')));
+app.use('/contents/:category/room',express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);

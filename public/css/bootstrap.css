@@ -2614,7 +2614,7 @@ select[multiple].input-lg,
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 5px 5px rgb(0, 0, 0);
 }
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
   cursor: not-allowed;
@@ -2627,7 +2627,9 @@ select[multiple].input-lg,
 a.btn.disabled, fieldset[disabled] a.btn {
   pointer-events: none;
 }
-
+li.disabled{
+  pointer-events: none;
+}
 .btn-default {
   color: #333;
   background-color: #fff;

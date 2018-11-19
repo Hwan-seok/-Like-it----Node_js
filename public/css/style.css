@@ -407,6 +407,12 @@ h1, h2, h3, h4, h5, h6, figure {
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
+  
+}
+#img {
+  width: auto; height: auto;
+  max-width: 64px;
+  max-height: 64px;
 }
 #gtco-project .fh5co-project > a:after {
   opacity: 0;

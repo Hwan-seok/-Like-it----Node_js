@@ -101,7 +101,7 @@
 						<div class="panel-body">
 							<ul class="media-list">
 							<script>
-									var chating =(who,time,chat,img_src)=>{
+									var chating =(chat,img_src)=>{ // chat.who , chat.time , chat.description
 									var li = document.createElement('li');
 									li.className = "media";
 
@@ -118,20 +118,23 @@
 									a.href = "sdfg";
 									var img = document.createElement('img');
 									img.classList.add("media-object", "img-circle");
+
+									sended=chat.sended;
 									img.src = img_src;
+									img.style.maxHeight = "64px";
 
 									a.appendChild(img);
 									div2.appendChild(a);
 
 									var div3 = document.createElement('div');
 									div3.className = "media-body";
-									div3.textContent = chat;
+									div3.textContent = chat.description;
 									var br = document.createElement('br');
 									div3.appendChild(br);
 
 									var small = document.createElement('small');
 									small.className = "text-muted";
-									small.textContent = `${who} | ${time}`;
+									small.textContent = `${chat.sended} | ${chat.time}`;
 
 									var hr = document.createElement('hr');
 
@@ -143,7 +146,37 @@
 									var list = document.getElementsByClassName("media-list");
 									list[0].appendChild(li);
 									}
-								chating("<%=who%>","<%=time%>","<%=chat%>","<%=img%>");
+
+									let temp ={};
+									let chat = [];
+
+									<%chat.forEach((chat)=>{%>
+										temp.sended = "<%=chat.sended%>";
+										temp.time = "<%=chat.time%>";
+										temp.description = "<%=chat.description%>";
+										chat.push(temp);
+									<%})%> //채팅한 말 객체들의 배열 [{sended:"YOU" , time : "now" , description : "lala"}, ... ]
+
+									let tmp ={};
+									let people=[];
+
+									<%people.forEach((people)=>{%>
+										tmp.id = "<%=people.id%>";
+										tmp.img = "<%=people.img%>";
+										people.push(tmp);
+									<%})%> //방에 참가하고 있는 인원들 객체 배열 [{ id:1123 ,img:123} , ... ]
+
+									let img;
+									const loop3 = chat.length;
+									console.log(chat);
+									console.log(people);
+
+									for(let i=0;i<loop3;i++){
+										for(j=0;j<people.length;j++){
+											if(people[j].id==chat[i].sended)img=people[j].img;
+										}
+									chating(chat[i],img);
+									}
 								</script>
 							</ul>
 						</div>
@@ -167,7 +200,7 @@
 							<ul class="media-list dd">
 
 								<script>
-									var users=(who,img_src)=>{
+									var users=(who)=>{
 									var li_ = document.createElement('li');
 									li_.className = "media";
 
@@ -185,7 +218,7 @@
 									var img_ = document.createElement('img');
 									img_.style.maxHeight = "40px";
 									img_.classList.add("media-object", "img-circle");
-									img_.src = img_src;
+									img_.src = who.img;
 
 									a_.appendChild(img_);
 									div2_.appendChild(a_);
@@ -194,7 +227,7 @@
 									div3_.className = "media-body";
 
 									var h5_ = document.createElement('h5');
-									h5_.textContent = `${who}|`;
+									h5_.textContent = `${who.id}|`;
 
 									var small_ = document.createElement('small');
 									small_.className = "text-muted";
@@ -208,7 +241,14 @@
 									var list_ = document.getElementsByClassName("dd");
 									list_[0].appendChild(li_);
 									}
-									users("<%=who%>","<%=img%>");
+
+									
+									 // people= blabla ( 이미 정의됨 앞에서)
+
+									console.log(people);
+									for(let i=0;i<people.length;i++){
+									users(people[i]);
+									}
 								</script>
 							</ul>
 						</div>

@@ -19,7 +19,7 @@ Socket.io를 이용한 관심분야 단체 채팅방 연결 서비스
         2. 카테고리를 열람할 수 있으며 로그인된 사용자가 선택할경우 해당 관심분야들이 모여있는 방목록으로 이동합니다.
         
         
-        ![main](public/images/main.png)
+![main](public/images/main.png)
 ---
                   
 * 관심분야 목록 :
@@ -27,7 +27,7 @@ Socket.io를 이용한 관심분야 단체 채팅방 연결 서비스
 
         * 로그인할 경우 메인 화면에 표기되며 사진을 선택하면 관심분야 방목록으로 이동합니다.
         
-        ![category](public/images/category.png)
+![category](public/images/category.png)
         
 ---
 
@@ -36,7 +36,7 @@ Socket.io를 이용한 관심분야 단체 채팅방 연결 서비스
 
         * 방 번호, 제목, 주인, 세부 관심사를 표기하며 각 행을 누르면 채팅방으로 입장합니다.
         
-        ![rooms](public/images/rooms.png)
+![rooms](public/images/rooms.png)
 
 ---
 
@@ -49,7 +49,7 @@ Socket.io를 이용한 관심분야 단체 채팅방 연결 서비스
 
         3. 오른쪽 사이드바에 해당 채팅방에 참여한 사람들의 프로필 사진과 이름이 표기됩니다.
         
-        ![chat](public/images/chat.png)
+![chat](public/images/chat.png)
 
 ---
 

@@ -35,6 +35,8 @@ router.get('/contents/:category/page/:page', authCheck, (req, res) => {
   })
 })
 router.get('/contents/:category/room/:room', authCheck, (req, res) => {
+  const user=JSON.stringify(req.user);
+  db.query('INSERT INTO participants (room,people) VALUES (?,?)',[req.params.room*=1 ,`${user}`],(err,result)=>{
   const sql = "Select * From rooms left JOIN participants ON rooms.num = participants.room WHERE rooms.num=?"; //participants
   const sql2 = "Select * From rooms left join chat on rooms.num=chat.room WHERE rooms.num=?"; //chat
   db.query(sql, [req.params.room], (err, room_Info) => {
@@ -42,15 +44,15 @@ router.get('/contents/:category/room/:room', authCheck, (req, res) => {
 
       let people = [];
       for (let i = 0; i < room_Info.length; i++)
-        people[i] = JSON.parse(room_Info[i].people); //방에 참가하고 있는 인원들 객체 배열 [{ id:1123 ,img:123} , ... ]
+        people[i] = JSON.parse(room_Info[i].people); //방에 참가하고 있는 인원들 JSON 배열 [{ "id":"1123","nickname":"LALA" ,"img":"123"} , ... ]
 
       let chat = [];
       for (let i = 0; i < chats.length; i++)
-        chat[i] = JSON.parse(chats[i].chat); //채팅한 말 객체들의 배열 [{sended:"YOU" , time : "now" , description : "lala"}, ... ]
+        chat[i] = JSON.parse(chats[i].chat); //채팅한 말 객체들의 배열 [{"sended":"YOUT","sended_NickName":"YOU" , time : "now" , description : "lala"}, ... ]
 
       // for (let i = 0; i < people.length; i++) {
       //   db.query("SELECT * FROM auth_kakao WHERE id = ?", people[i], (err, user) => {
-      console.log(people,chat)
+      console.log(people)
       res.render('chat', {
         main: req.user,
         chat,
@@ -59,6 +61,7 @@ router.get('/contents/:category/room/:room', authCheck, (req, res) => {
 
     })
   })
+});
 })
 
 

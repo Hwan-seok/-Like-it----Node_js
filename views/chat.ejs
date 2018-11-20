@@ -134,7 +134,7 @@
 
 									var small = document.createElement('small');
 									small.className = "text-muted";
-									small.textContent = `${chat.sended} | ${chat.time}`;
+									small.textContent = `${chat.sended_Nickname} | ${chat.time}`;
 
 									var hr = document.createElement('hr');
 
@@ -152,19 +152,21 @@
 
 									<%chat.forEach((chat)=>{%>
 										temp.sended = "<%=chat.sended%>";
+										temp.sended_Nickname = "<%=chat.sended_Nickname%>";
 										temp.time = "<%=chat.time%>";
 										temp.description = "<%=chat.description%>";
 										chat.push(temp);
-									<%})%> //채팅한 말 객체들의 배열 [{sended:"YOU" , time : "now" , description : "lala"}, ... ]
+									<%})%> //채팅한 말 객체들의 배열 [{"sended":"YOUT","sended_NickName":"YOU" , time : "now" , description : "lala"}, ... ]
 
 									let tmp ={};
 									let people=[];
 
 									<%people.forEach((people)=>{%>
 										tmp.id = "<%=people.id%>";
-										tmp.img = "<%=people.img%>";
+										tmp.profile_image = "<%=people.profile_image%>";
+										tmp.nickname= "<%=people.nickname%>";
 										people.push(tmp);
-									<%})%> //방에 참가하고 있는 인원들 객체 배열 [{ id:1123 ,img:123} , ... ]
+									<%})%> //방에 참가하고 있는 인원들 JSON 배열 [{ "id":"1123","nickname":"LALA" ,"img":"123"} , ... ]
 
 									let img;
 									const loop3 = chat.length;
@@ -173,7 +175,7 @@
 
 									for(let i=0;i<loop3;i++){
 										for(j=0;j<people.length;j++){
-											if(people[j].id==chat[i].sended)img=people[j].img;
+											if(people[j].id==chat[i].sended)img=people[j].profile_image; //참여자의 id와 chat들의 id를 비교하여 일치하는 people의 img를 넘김
 										}
 									chating(chat[i],img);
 									}
@@ -218,7 +220,7 @@
 									var img_ = document.createElement('img');
 									img_.style.maxHeight = "40px";
 									img_.classList.add("media-object", "img-circle");
-									img_.src = who.img;
+									img_.src = who.profile_image;
 
 									a_.appendChild(img_);
 									div2_.appendChild(a_);
@@ -227,7 +229,7 @@
 									div3_.className = "media-body";
 
 									var h5_ = document.createElement('h5');
-									h5_.textContent = `${who.id}|`;
+									h5_.textContent = `${who.nickname}`;
 
 									var small_ = document.createElement('small');
 									small_.className = "text-muted";

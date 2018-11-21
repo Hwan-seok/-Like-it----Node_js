@@ -86,8 +86,8 @@
 		</nav>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-			var socket = io();
-			socket.emit("chat", "lalalala");
+			var socket = io('/chat');
+			socket.emit("connection",<%=room_id%> );
 		</script>
 		<div class="container">
 			<div class="row " style="padding-top:40px;">
@@ -180,13 +180,16 @@
 									chating(chat[i],img);
 									}
 								</script>
+								<script>
+								chating()
+								</script>
 							</ul>
 						</div>
 						<div class="panel-footer">
 							<div class="input-group">
 								<input type="text" class="form-control" placeholder="Enter Message" />
 								<span class="input-group-btn">
-									<button class="btn btn-info" type="button">SEND</button>
+									<button class="btn btn-info" type="button" onclick="chatsend()">SEND</button>
 								</span>
 							</div>
 						</div>

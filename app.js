@@ -42,6 +42,6 @@ app.use(function (err, req, res, next) {
 });
 
 server.listen(80);
-SOCKETIO(server);
+SOCKETIO(server,app);
 
 module.exports = app;

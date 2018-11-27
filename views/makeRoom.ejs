@@ -84,75 +84,21 @@
 
 				</div>
 		</nav>
-		<script src="/socket.io/socket.io.js"></script>
-		<script>
-			var socket = io();
-			socket.emit("chat", "lalalala");
-		</script>
+
 		<div id="gtco-project">
 			<div class="container">
 				<div class="row row-pb-md">
-					<div class="col-md-7">
-						<h3>roooooms</h3>
-						<a href = "/contents/<%=category%>/makeRoom"><p class="desc">방 만들기</p></a>
-					</div>
-				</div>
-				<div style="padding-bottom:20em">
-
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Name</th>
-								<th scope="col">Owner</th>
-								<th scope="col">#Likes!</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							<%rooms.forEach((rooms)=>{%>
-								<tr onclick="location.href='/contents/<%=category%>/room/<%=rooms.num%>' ">
-
-										<th scope="row">
-											<%=rooms.num%>
-										</th>
-										<td>
-											<%=rooms.name%> 
-										</td>
-										<td>
-											<%=rooms.owner%>
-										</td>
-										<td>
-											<%=rooms.likes%>
-										</td>
-									</a>
-
-								</tr>
-						
-							<%})%>
-
-
-						</tbody>
-					</table>
-
-					<nav aria-label="..." class="text-center">
-						<ul class="pagination pagination-sm">
-							<%let previous=""; if(current_page==1) previous="disabled" %>
-							<li class="page-item <%=previous%>">
-								<a class="page-link" href="/contents/<%=category%>/page/<%=current_page-1%>">Previous</a>
-							</li>
-
-							<% for(var i=0;i<page_num;i++){ %>
-							<%let active = ""; if(current_page==i+1)active="active" %>
-							<li class="page-item <%=active%>"><a class="page-link" href="/contents/<%=category%>/page/<%=i+1%>">
-									<%=i+1%></a></li>
-							<%}%>
-							<%let next = ""; if(current_page==page_num)next="disabled"%>
-							<li class="page-item <%=next%>">
-								<a class="page-link" href="/contents/<%=category%>/page/<%=current_page+1%>">Next</a>
-							</li>
-						</ul>
-					</nav>
+					<form style="margin-bottom:300px" action="/contents/<%=category%>/makeroom" method = "post"> 
+						<div class="form-group" style="margin-bottom:100px">
+							<label for="exampleInputEmail1">방 제목</label>
+							<input type="text" class="form-control" name="name" placeholder="방 제목">
+						</div>
+						<div class="form-group" style="margin-bottom:100px">
+							<label for="exampleInputPassword1">세부 관심분야</label>
+							<input type="text" class="form-control" name="likes" placeholder="세부 관심분야">
+						</div>
+						<button type="submit" class="btn btn-primary">방 만들기</button>
+					</form>
 				</div>
 
 				<footer id="fh5co-footering">

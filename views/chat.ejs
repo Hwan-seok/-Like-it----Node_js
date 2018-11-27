@@ -48,10 +48,20 @@
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
+	<!-- jQuery -->
+	<script src="js/jquery.min.js"></script>
+	<!-- jQuery Easing -->
+	<script src="js/jquery.easing.1.3.js"></script>
+	<!-- Bootstrap -->
+	<script src="js/bootstrap.min.js"></script>
+	<!-- Waypoints -->
+	<script src="js/jquery.waypoints.min.js"></script>
+	<!-- Main -->
+	<script src="js/main.js"></script>
 </head>
 
 <body>
-
+	
 	<div class="gtco-loader"></div>
 
 	<div id="page">
@@ -87,8 +97,16 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			var socket = io('/chat');
-			socket.emit("connection",<%=room_id%> );
+			socket.emit("connection",<%=people[0].room%> );
 		</script>
+		<script>
+			socket.on("chat_sended_to_client",(msg)=>{  //서버에서 client에게 메세지 전송
+						chating(msg);	 //채팅 하나 더 넣어줌
+						console.log("MSG",msg);
+						scroll_Bot();  //auto scroll
+						
+					});
+				</script>
 		<div class="container">
 			<div class="row " style="padding-top:40px;">
 				<h3 class="text-center">NAME </h3>
@@ -98,13 +116,19 @@
 						<div class="panel-heading">
 							CHAT
 						</div>
+						<script>
+							const scroll_Bot=()=>{
+								var objDiv = document.getElementById("chats");
+								objDiv.scrollTop = objDiv.scrollHeight;
+							}
+						</script>
 						<div class="panel-body">
-							<ul class="media-list">
-							<script>
-									var chating =(chat,img_src)=>{ // chat.who , chat.time , chat.description
+							<ul class="media-list" id="chats">
+								<script>
+									var chating =(chat)=>{ // chat.who , chat.time , chat.description
 									var li = document.createElement('li');
 									li.className = "media";
-
+										
 									var div = document.createElement('div');
 									div.className = "media-body";
 									li.appendChild(div);
@@ -120,7 +144,7 @@
 									img.classList.add("media-object", "img-circle");
 
 									sended=chat.sended;
-									img.src = img_src;
+									img.src = chat.profile_image;
 									img.style.maxHeight = "64px";
 
 									a.appendChild(img);
@@ -148,53 +172,61 @@
 									}
 
 									let temp ={};
-									let chat = [];
-
+									let chats = [];
 									<%chat.forEach((chat)=>{%>
+										
+										temp={};
 										temp.sended = "<%=chat.sended%>";
-										temp.sended_Nickname = "<%=chat.sended_Nickname%>";
+										temp.sended_Nickname = "<%=chat.sended_nickname%>";
 										temp.time = "<%=chat.time%>";
 										temp.description = "<%=chat.description%>";
-										chat.push(temp);
-									<%})%> //채팅한 말 객체들의 배열 [{"sended":"YOUT","sended_NickName":"YOU" , time : "now" , description : "lala"}, ... ]
-
+										temp.profile_image="<%=chat.profile_image%>";
+										chats.push(temp);
+									<%})%> //채팅한 말 객체들의 배열 [ { room : 10  "sended":"YOUT","sended_NickName":"YOU" , time : "now" , description : "lala", profile_image : "!@#@!#"} ,  ... ]
+       
 									let tmp ={};
 									let people=[];
 
 									<%people.forEach((people)=>{%>
+										tmp={};
 										tmp.id = "<%=people.id%>";
 										tmp.profile_image = "<%=people.profile_image%>";
 										tmp.nickname= "<%=people.nickname%>";
 										people.push(tmp);
-									<%})%> //방에 참가하고 있는 인원들 JSON 배열 [{ "id":"1123","nickname":"LALA" ,"img":"123"} , ... ]
-
-									let img;
-									const loop3 = chat.length;
-									console.log(chat);
-									console.log(people);
-
+									<%})%>  //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
+									if(<%=!new_room%>){
+									const loop3 = chats.length;
 									for(let i=0;i<loop3;i++){
-										for(j=0;j<people.length;j++){
-											if(people[j].id==chat[i].sended)img=people[j].profile_image; //참여자의 id와 chat들의 id를 비교하여 일치하는 people의 img를 넘김
-										}
-									chating(chat[i],img);
+									chating(chats[i]);
 									}
-								</script>
-								<script>
-								chating()
+								}
+									// document.write()
+									scroll_Bot();
 								</script>
 							</ul>
 						</div>
-						<div class="panel-footer">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Enter Message" />
-								<span class="input-group-btn">
-									<button class="btn btn-info" type="button" onclick="chatsend()">SEND</button>
-								</span>
+						<form id="chating">
+							<div class="panel-footer">
+								<div class="input-group">
+									<input type="text" class="form-control" id="message" placeholder="Enter Message" />
+									<span class="input-group-btn">
+										<input type="submit" class="btn btn-info" type="button" value="전송">
+									</span>
+								</div>
 							</div>
-						</div>
+						</form>
 					</div>
 				</div>
+				<script>
+					$('#chating').submit((e) => {
+						const msg = $('#message').val();
+						console.log("subbmit", msg);
+						socket.emit('chat_sended_to_server', msg);
+						$('#message').val('');
+						$('#message').focus();
+						e.preventDefault();
+					});
+				</script>
 
 				<div class="col-md-4">
 					<div class="panel panel-primary">
@@ -205,55 +237,60 @@
 							<ul class="media-list dd">
 
 								<script>
-									var users=(who)=>{
-									var li_ = document.createElement('li');
-									li_.className = "media";
+									var users = (who) => {
+										var li_ = document.createElement('li');
+										li_.className = "media";
+										li_.classList.add(who.id);
 
-									var div_ = document.createElement('div');
-									div_.className = "media-body";
-									li_.appendChild(div_);
+										var div_ = document.createElement('div');
+										div_.className = "media-body";
+										li_.appendChild(div_);
 
-									var div2_ = document.createElement('div');
-									div2_.className = "media";
-									div_.appendChild(div2_);
+										var div2_ = document.createElement('div');
+										div2_.className = "media";
+										div_.appendChild(div2_);
 
-									var a_ = document.createElement('a');
-									a_.className = "pull-left";
-									a_.href = "sdfg";
-									var img_ = document.createElement('img');
-									img_.style.maxHeight = "40px";
-									img_.classList.add("media-object", "img-circle");
-									img_.src = who.profile_image;
+										var a_ = document.createElement('a');
+										a_.className = "pull-left";
+										a_.href = "sdfg";
+										var img_ = document.createElement('img');
+										img_.style.maxHeight = "40px";
+										img_.classList.add("media-object", "img-circle");
+										img_.src = who.profile_image;
 
-									a_.appendChild(img_);
-									div2_.appendChild(a_);
+										a_.appendChild(img_);
+										div2_.appendChild(a_);
 
-									var div3_ = document.createElement('div');
-									div3_.className = "media-body";
+										var div3_ = document.createElement('div');
+										div3_.className = "media-body";
 
-									var h5_ = document.createElement('h5');
-									h5_.textContent = `${who.nickname}`;
+										var h5_ = document.createElement('h5');
+										h5_.textContent = `${who.nickname}`;
 
-									var small_ = document.createElement('small');
-									small_.className = "text-muted";
-									small_.textContent = "Active From 3 hours";
+										var small_ = document.createElement('small');
+										small_.className = "text-muted";
+										small_.textContent = "";
 
-									div3_.appendChild(h5_);
-									div3_.appendChild(small_);
+										div3_.appendChild(h5_);
+										div3_.appendChild(small_);
 
-									div2_.appendChild(div3_);
+										div2_.appendChild(div3_);
 
-									var list_ = document.getElementsByClassName("dd");
-									list_[0].appendChild(li_);
+										var list_ = document.getElementsByClassName("dd");
+										list_[0].appendChild(li_);
 									}
 
-									
-									 // people= blabla ( 이미 정의됨 앞에서)
+
+									// people= blabla ( 이미 정의됨 앞에서)
 
 									console.log(people);
-									for(let i=0;i<people.length;i++){
-									users(people[i]);
+									for (let i = 0; i < people.length; i++) {
+										users(people[i]);
 									}
+									socket.on("other_leaved_room", (data) => {
+										$(`${data.id}`).remove();
+										chating(data, undefined);
+									})
 								</script>
 							</ul>
 						</div>
@@ -295,17 +332,6 @@
 		<div class="gototop js-top">
 			<a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 		</div>
-		<!-- jQuery -->
-		<script src="js/jquery.min.js"></script>
-		<!-- jQuery Easing -->
-		<script src="js/jquery.easing.1.3.js"></script>
-		<!-- Bootstrap -->
-		<script src="js/bootstrap.min.js"></script>
-		<!-- Waypoints -->
-		<script src="js/jquery.waypoints.min.js"></script>
-
-		<!-- Main -->
-		<script src="js/main.js"></script>
 
 </body>
 

@@ -2,6 +2,19 @@ var express = require('express');
 const router = express.Router();
 const sha = require('sha256');
 const db = require('../lib/db.js'); 
+const multer = require('multer');
+const path = require('path');
+const upload = multer({
+    storage: multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, 'public/images/');
+      },
+      filename: function (req, file, cb) { //원래 이름으로 파일 저장
+        cb(null, file.originalname);
+      }
+    }),
+  });
+const fs = require('fs');
 module.exports = (app) => {
 
     // const bodyParser = require('body-parser');
@@ -28,13 +41,17 @@ module.exports = (app) => {
             failureRedirect: '/login'
         })
     );
-    router.post('/register', function (request, response) { //name= {id , password , nickname} 으로 받음 
+    router.post('/register',upload.single('file'), function (request, response) { //name= {id , password , nickname} 으로 받음 
         const post = request.body;
         var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz!@#$%^&*()";
         var string_length = 15;
         var salt = '';
+        const file=`images/${request.file.originalname}`;
+        console.log("file",request.file);
+        console.log("dir",file);
         db.query('SELECT id FROM auth_local WHERE id=?', post.id, function (err, result) {
             if (result[0]) {
+                
                 return response.status(400).json({
                     SERVER_RESPONSE: 0,
                     SERVER_MESSAGE: "Existed ID"
@@ -44,7 +61,7 @@ module.exports = (app) => {
                     var rnum = Math.floor(Math.random() * chars.length);
                     salt += chars.substring(rnum, rnum + 1);
                 }
-                db.query("INSERT INTO auth_local values(?,?,?,?)", [post.id, sha(post.password + salt), post.nickname, salt], function (err) {
+                db.query("INSERT INTO auth_local values(?,?,?,?,?,?)", [post.id, sha(post.password + salt), post.nickname, salt,post.name,file], function (err) {
                     request.login(post, function (err) {
                         request.session.save(function () {
                             return response.redirect('/');

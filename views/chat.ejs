@@ -96,17 +96,22 @@
 		</nav>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-			var socket = io('/chat');
-			console.log("room",<%=people[0].room%>);
-			socket.emit("connection",<%=people[0].room%> );
+			var socket = io('/chat',{transports: ['websocket'], upgrade: false});
+			socket.emit("connection",<%=roomnum%> );
 		</script>
 		<script>
 			socket.on("chat_sended_to_client",(msg)=>{  //서버에서 client에게 메세지 전송
 						chating(msg);	 //채팅 하나 더 넣어줌
 						console.log("MSG",msg);
 						scroll_Bot();  //auto scroll
-						
 					});
+			socket.on("new_user_in",(info)=>{ 
+				info.id=info.sended;
+				info.nickname=info.sended_Nickname;
+				users(info); //id profile_image nickname
+				chating(info);
+				scroll_Bot();  //auto scroll
+			})
 				</script>
 		<div class="container">
 			<div class="row " style="padding-top:40px;">
@@ -288,10 +293,6 @@
 									for (let i = 0; i < people.length; i++) {
 										users(people[i]);
 									}
-									socket.on("other_leaved_room", (data) => {
-										$(`${data.id}`).remove();
-										chating(data, undefined);
-									})
 								</script>
 							</ul>
 						</div>

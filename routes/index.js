@@ -60,25 +60,33 @@ router.post('/contents/:category/makeroom', authCheck, (req, res) => {
 router.get('/contents/:category/room/:room', authCheck, (req, res) => {
   let new_room=false;
   const user = req.user;
-  const sql_2 = "Select * From rooms left JOIN participants ON rooms.num = participants.room WHERE rooms.num=?"; //participants
-  const sql_3 = "Select * From rooms left join chat on rooms.num=chat.room WHERE rooms.num=?"; //chat
-  
+  const sql_1 = 'INSERT INTO participants (room,id,name,nickname,profile_image) VALUES (?,?,?,?,?)'; //add user in room
+  const sql_2 = "Select * From participants WHERE room=?"; //participants
+  const sql_3 = "Select * From chat WHERE room=?"; //chat
+  const roomnum=req.params.room *= 1;
+  db.query(sql_1, [roomnum, user.id, user.name, user.nickname, user.profile_image], (err, result) => {
+    console.log("err",err);
+    console.log("result",result);
+    
     db.query(sql_2, [req.params.room], (err, people) => {
       //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
       db.query(sql_3, [req.params.room], (err, chat) => {
-        //채팅한 말 객체들의 배열 [ { room : 10  "sended":"YOUT","sended_nickName":"YOU" , time : "now" , description : "lala", profile_image : "!@#@!#"} ,  ... ]
-        console.log(people);
-        if(chat[0].sended==null)
+        //채팅한 말 객체들의 배열 [ { "sended":"YOUT","sended_nickName":"YOU" , time : "now" , description : "lala", profile_image : "!@#@!#"} ,  ... ]
+        if(chat[0]==undefined)
           new_room=true;
         res.render('chat', {
           main: req.user,
           chat,
+          roomnum,
           people,
           new_room
-        
+        })
       })
     })
-  });
+  })
+})
+router.get('/favicon.ico',(req,res)=>{
+  res.send('./favicon');
 })
 
 

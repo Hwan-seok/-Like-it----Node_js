@@ -60,14 +60,9 @@ router.post('/contents/:category/makeroom', authCheck, (req, res) => {
 router.get('/contents/:category/room/:room', authCheck, (req, res) => {
   let new_room=false;
   const user = req.user;
-  const sql_1 = 'INSERT INTO participants (room,id,name,nickname,profile_image) VALUES (?,?,?,?,?)'; //add user in room
   const sql_2 = "Select * From rooms left JOIN participants ON rooms.num = participants.room WHERE rooms.num=?"; //participants
   const sql_3 = "Select * From rooms left join chat on rooms.num=chat.room WHERE rooms.num=?"; //chat
-
-  db.query(sql_1, [req.params.room *= 1, user.id, user.name, user.nickname, user.profile_image], (err, result) => {
-    console.log("err",err);
-    console.log("err",result);
-    
+  
     db.query(sql_2, [req.params.room], (err, people) => {
       //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
       db.query(sql_3, [req.params.room], (err, chat) => {
@@ -80,7 +75,7 @@ router.get('/contents/:category/room/:room', authCheck, (req, res) => {
           chat,
           people,
           new_room
-        })
+        
       })
     })
   });

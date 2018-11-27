@@ -97,6 +97,7 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
 			var socket = io('/chat');
+			console.log("room",<%=people[0].room%>);
 			socket.emit("connection",<%=people[0].room%> );
 		</script>
 		<script>

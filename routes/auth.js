@@ -76,7 +76,8 @@ module.exports = (app) => {
         response.redirect('/');
     });
     router.get('/kakao', passport.authenticate('kakao'));
-    router.get('/kakao/callback', passport.authenticate('kakao'), function (request, response) {
+    router.get('/kakao/callback', passport.authenticate('kakao'), 
+    function (request, response) {
         if (!request.user) {
             console.log("kakao_Wrong credentials");
             return response.status(400).json({

@@ -43,9 +43,9 @@ router.get('/contents/:category/makeroom', authCheck, (req, res) => {
 })
 router.post('/contents/:category/makeroom', authCheck, (req, res) => {
   const contents = req.params.category;
-  console.log("post", contents)
+  console.log("post", req.user)
   const name = req.body.name;
-  const owner = req.user.id;
+  const owner = req.user.nickname;
   const likes = req.body.likes;
 
   const sql = "INSERT INTO rooms (contents,name,owner,likes) VALUES (?,?,?,?)";
@@ -60,14 +60,14 @@ router.post('/contents/:category/makeroom', authCheck, (req, res) => {
 router.get('/contents/:category/room/:room', authCheck, (req, res) => {
   let new_room=false;
   const user = req.user;
-  const sql_1 = 'INSERT INTO participants (room,id,name,nickname,profile_image) VALUES (?,?,?,?,?)'; //add user in room
+  const sql_1= "SELECT * FROM rooms where num=?"; //room info
   const sql_2 = "Select * From participants WHERE room=?"; //participants
   const sql_3 = "Select * From chat WHERE room=?"; //chat
   const roomnum=req.params.room *= 1;
-  db.query(sql_1, [roomnum, user.id, user.name, user.nickname, user.profile_image], (err, result) => {
-    console.log("err",err);
-    console.log("result",result);
-    
+  const category=req.params.category;
+    db.query(sql_1,req.params.room,(err,result)=>{
+      // 방 정보 
+      const roomname=result[0].name;
     db.query(sql_2, [req.params.room], (err, people) => {
       //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
       db.query(sql_3, [req.params.room], (err, chat) => {
@@ -79,14 +79,16 @@ router.get('/contents/:category/room/:room', authCheck, (req, res) => {
           chat,
           roomnum,
           people,
-          new_room
+          new_room,
+          category,
+          roomname
         })
-      })
+      }) 
     })
   })
 })
 router.get('/favicon.ico',(req,res)=>{
-  res.send('./favicon');
+  res.send('./favicon.ico');
 })
 
 

@@ -84,17 +84,12 @@
 
 				</div>
 		</nav>
-		<script src="/socket.io/socket.io.js"></script>
-		<script>
-			var socket = io();
-			socket.emit("chat", "lalalala");
-		</script>
 		<div id="gtco-project">
 			<div class="container">
 				<div class="row row-pb-md">
 					<div class="col-md-7">
 						<h3>roooooms</h3>
-						<a href = "/contents/<%=category%>/makeRoom"><p class="desc">방 만들기</p></a>
+						<button type="button" class="btn btn-info btn-sm" onclick="location.href='/contents/<%=category%>/makeRoom'">방 만들기</button>
 					</div>
 				</div>
 				<div style="padding-bottom:20em">

@@ -4681,7 +4681,7 @@ a.thumbnail.active {
 .media-list {
   padding-left: 0;
   min-height: 300px;
-  max-height: 500px;
+  max-height: 450px;
   list-style: none;
   overflow-y:scroll;
   overflow-y:auto;

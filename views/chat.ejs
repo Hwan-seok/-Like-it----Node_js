@@ -96,7 +96,7 @@
 		</nav>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
-			var socket = io('/chat',{transports: ['websocket'], upgrade: false});
+			var socket = io.connect('/chat',{transports: ['websocket'],upgrade:false});
 			socket.emit("connection",<%=roomnum%> );
 		</script>
 		<script>
@@ -106,16 +106,28 @@
 						scroll_Bot();  //auto scroll
 					});
 			socket.on("new_user_in",(info)=>{ 
+				console.log("userin");
 				info.id=info.sended;
 				info.nickname=info.sended_Nickname;
-				users(info); //id profile_image nickname
+				list=$(`.${info.id}`)[0];
+				if(!list) //이미 추가되었으면 중복 제거함
+					users(info); //id profile_image nickname
+				chating(info);
+				scroll_Bot();  //auto scroll
+			})
+			socket.on("other_leaved_room",(info)=>{ 
+				console.log("userout");
+				info.id=info.sended;
+				info.nickname=info.sended_Nickname;
+				$(`.${info.id}`).remove();
+				// users(info); //id profile_image nickname
 				chating(info);
 				scroll_Bot();  //auto scroll
 			})
 				</script>
 		<div class="container">
 			<div class="row " style="padding-top:40px;">
-				<h3 class="text-center">NAME </h3>
+				<h3 class="text-center"><%=roomname%> </h3>
 				<br /><br />
 				<div class="col-md-8">
 					<div class="panel panel-info">
@@ -289,7 +301,6 @@
 
 									// people= blabla ( 이미 정의됨 앞에서)
 
-									console.log(people);
 									for (let i = 0; i < people.length; i++) {
 										users(people[i]);
 									}
@@ -297,7 +308,7 @@
 							</ul>
 						</div>
 					</div>
-
+					<button type="button" class="btn btn-info" onclick="location.href='/contents/<%=category%>/page/1'">방 나가기</button>
 				</div>
 			</div>
 		</div>

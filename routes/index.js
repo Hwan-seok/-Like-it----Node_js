@@ -51,43 +51,36 @@ router.post('/contents/:category/makeroom', authCheck, (req, res) => {
   const sql = "INSERT INTO rooms (contents,name,owner,likes,numParticipants) VALUES (?,?,?,?,?)";
   const LAST = "SELECT LAST_INSERT_ID() AS id";
 
-  db.query(sql, [contents, name, owner, likes,1], (err, result) => { //방정보 db삽입
+  db.query(sql, [contents, name, owner, likes, 1], (err, result) => { //방정보 db삽입
     db.query(LAST, (err, id) => { //방금 삽입한 방 정보 가져옴
       res.redirect(`/contents/${contents}/room/${id[0].id}`) //방금 만든 방으로 리다이렉 시킴
     })
   })
 })
 router.get('/contents/:category/room/:room', authCheck, (req, res) => {
-  let new_room=false;
   const user = req.user;
-  const sql_1= "SELECT * FROM rooms where num=?"; //room info
+  const sql_1 = "SELECT * FROM rooms where num=?"; //room info
   const sql_2 = "Select * From participants WHERE room=?"; //participants
-  const sql_3 = "Select * From chat WHERE room=?"; //chat
-  const roomnum=req.params.room *= 1;
-  const category=req.params.category;
-    db.query(sql_1,req.params.room,(err,result)=>{
-      // 방 정보 
-      const roomname=result[0].name;
+  const roomnum = req.params.room *= 1;
+  const category = req.params.category;
+  db.query(sql_1, req.params.room, (err, result) => {
+    // 방 정보 
+    const roomname = result[0].name;
     db.query(sql_2, [req.params.room], (err, people) => {
       //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
-      db.query(sql_3, [req.params.room], (err, chat) => {
-        //채팅한 말 객체들의 배열 [ { "sended":"YOUT","sended_nickName":"YOU" , time : "now" , description : "lala", profile_image : "!@#@!#"} ,  ... ]
-        if(chat[0]==undefined)
-          new_room=true;
-        res.render('chat', {
-          main: req.user,
-          chat,
-          roomnum,
-          people,
-          new_room,
-          category,
-          roomname
-        })
-      }) 
+      // 원래 이전 채팅을 불러왔으나 불러올 필요가 없음을 깨닫고 불러오는 부분 없앰 2018-12-02 00시경 commit
+
+      res.render('chat', {
+        main:user,
+        roomnum,
+        people,
+        category,
+        roomname
+      })
     })
   })
 })
-router.get('/favicon.ico',(req,res)=>{
+router.get('/favicon.ico', (req, res) => {
   res.send('./favicon.ico');
 })
 

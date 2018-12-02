@@ -61,7 +61,7 @@
 </head>
 
 <body>
-	
+
 	<div class="gtco-loader"></div>
 
 	<div id="page">
@@ -127,7 +127,9 @@
 				</script>
 		<div class="container">
 			<div class="row " style="padding-top:40px;">
-				<h3 class="text-center"><%=roomname%> </h3>
+				<h3 class="text-center">
+					<%=roomname%>
+				</h3>
 				<br /><br />
 				<div class="col-md-8">
 					<div class="panel panel-info">
@@ -167,23 +169,31 @@
 
 									a.appendChild(img);
 									div2.appendChild(a);
+									
+									if(chat.gif_src){
+										var div3 = document.createElement('div');
+										div3.className = "media-body";
+										div3.textContent = chat.description;
+										var br = document.createElement('br');
+										div3.appendChild(br);
+										var small = document.createElement('small');
+										small.className = "text-muted";
+										small.textContent = `${chat.sended_Nickname} | ${chat.time}`;
 
-									var div3 = document.createElement('div');
-									div3.className = "media-body";
-									div3.textContent = chat.description;
-									var br = document.createElement('br');
-									div3.appendChild(br);
+										var hr = document.createElement('hr');
+										
+										div3.appendChild(small);
+										div3.appendChild(hr);
 
-									var small = document.createElement('small');
-									small.className = "text-muted";
-									small.textContent = `${chat.sended_Nickname} | ${chat.time}`;
+										div2.appendChild(div3);
+									}else{
+										var gif =document.createElement('img');
+										gif.src=chat.gif_src;
+										var br = document.createElement('br');
+										gif.appendChild(br);
+										div2.appendChild(gif);
+									}
 
-									var hr = document.createElement('hr');
-
-									div3.appendChild(small);
-									div3.appendChild(hr);
-
-									div2.appendChild(div3);
 
 									var list = document.getElementsByClassName("media-list");
 									list[0].appendChild(li);
@@ -210,7 +220,7 @@
 								</script>
 							</ul>
 						</div>
-						<form id="chating">
+						<form id="chating" enctype="multipart/form-data">
 							<div class="panel-footer">
 								<div class="input-group">
 									<input type="text" class="form-control" id="message" placeholder="Enter Message" />
@@ -221,6 +231,9 @@
 							</div>
 						</form>
 					</div>
+					<label class="btn btn-primary btn-file">
+						<input type="file" name="upload" id="upload" style="display: none;" value="파일추가">
+					</label>
 				</div>
 				<script>
 					$('#chating').submit((e) => {
@@ -231,6 +244,24 @@
 						$('#message').focus();
 						e.preventDefault();
 					});
+					 let file=document.getElementById('upload');
+					 file.addEventListener("change",(e)=>{
+						e.preventDefault();
+						const formData = new FormData();
+						const xhr = new XMLHttpRequest();
+						console.log (e.target.files);
+						formData.append('gif',e.target.files[0]);
+						xhr.onload = ()=>{
+							if(xhr.status===200)
+							e.target.file=null;
+							else
+							console.error(xhr.responseText);
+						};
+						xhr.open('POST','/contents/<%=category%>/room/<%=roomnum%>/picture');
+						xhr.send(formData);
+						});
+						
+
 				</script>
 
 				<div class="col-md-4">
@@ -296,6 +327,7 @@
 						</div>
 					</div>
 					<button type="button" class="btn btn-info" onclick="location.href='/contents/<%=category%>/page/1'">방 나가기</button>
+
 				</div>
 			</div>
 		</div>

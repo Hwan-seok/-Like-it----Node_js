@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const authCheck = require('../lib/auth_check.js');
+const upload = require('../lib/Multer.js');
 const db = require('../lib/db.js');
 /* GET home page. */
 
@@ -61,17 +62,19 @@ router.get('/contents/:category/room/:room', authCheck, (req, res) => {
   const user = req.user;
   const sql_1 = "SELECT * FROM rooms where num=?"; //room info
   const sql_2 = "Select * From participants WHERE room=?"; //participants
+  console.log("room",req.params.room)
   const roomnum = req.params.room *= 1;
   const category = req.params.category;
   db.query(sql_1, req.params.room, (err, result) => {
     // 방 정보 
+    console.log (err);
     const roomname = result[0].name;
+    //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
     db.query(sql_2, [req.params.room], (err, people) => {
-      //방에 참가하고 있는 인원들 객체 배열 [ {"id":"1123",name: "asdfa","nickname":"LALA" ,"profile_image":"123"} , ... ]
-      // 원래 이전 채팅을 불러왔으나 불러올 필요가 없음을 깨닫고 불러오는 부분 없앰 2018-12-02 00시경 commit
 
+      // 원래 이전 채팅을 불러왔으나 불러올 필요가 없음을 깨닫고 불러오는 부분 없앰 2018-12-02 00시경 commit
       res.render('chat', {
-        main:user,
+        main: user,
         roomnum,
         people,
         category,
@@ -79,6 +82,30 @@ router.get('/contents/:category/room/:room', authCheck, (req, res) => {
       })
     })
   })
+})
+
+router.post('/contents/:category/room/:room/picture', upload.single('gif'), async (req, res) => {
+  try {
+    const msg = {};
+    const now = new Date();
+    msg.time = now.toLocaleString();
+    msg.sended = req.user.id;
+    msg.sended_Nickname = req.user.nickname;
+    msg.profile_image = req.user.profile_image;
+    msg.description = data;
+    msg.gif_src = req.file.filename;
+
+    //클라이언트가 메세지로 GiFsEnDeD를 받으면 gif_src로 gif를 받아옴
+    const sql = "INSERT INTO chat (room, description,sended,sended_nickname,time,profile_image,gif_src) VALUES (?,'GiFsEnDeD',?,?,?,?,?)";
+
+    db.query(sql, [req.params.room, msg.sended, msg.sended_Nickname, msg.time, msg.profile_image, msg.gif_src], (err, result) => {
+      req.app.get('chat').to(req.params.room).emit('chat_sended_to_client', msg);
+      res.send('ok');
+    })
+
+  } catch (err) {
+    console.error(err);
+  }
 })
 router.get('/favicon.ico', (req, res) => {
   res.send('./favicon.ico');

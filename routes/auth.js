@@ -2,19 +2,7 @@ var express = require('express');
 const router = express.Router();
 const sha = require('sha256');
 const db = require('../lib/db.js'); 
-const multer = require('multer');
-const path = require('path');
-const upload = multer({
-    storage: multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, 'public/images/');
-      },
-      filename: function (req, file, cb) { //원래 이름으로 파일 저장
-        cb(null, file.originalname);
-      }
-    }),
-  });
-const fs = require('fs');
+const upload = require('../lib/Multer.js');
 module.exports = (app) => {
 
     // const bodyParser = require('body-parser');

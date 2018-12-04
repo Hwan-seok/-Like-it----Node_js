@@ -112,6 +112,7 @@
 				list=$(`.${info.id}`)[0];
 				if(!list) //이미 추가되었으면 중복 제거함
 					users(info); //id profile_image nickname
+					console.log(info);
 				chating(info);
 				scroll_Bot();  //auto scroll
 			})
@@ -142,8 +143,8 @@
 								objDiv.scrollTop = objDiv.scrollHeight;
 							}
 						</script>
-						<div class="panel-body">
-							<ul class="media-list" id="chats">
+						<div class="panel-body" >
+							<ul class="media-list" id="chats" >
 								<script>
 									var chating =(chat)=>{ // chat.who , chat.time , chat.description
 									var li = document.createElement('li');
@@ -169,8 +170,9 @@
 
 									a.appendChild(img);
 									div2.appendChild(a);
-									
-									if(chat.gif_src){
+
+									if(!chat.gif_src){
+									console.log("gif no");
 										var div3 = document.createElement('div');
 										div3.className = "media-body";
 										div3.textContent = chat.description;
@@ -187,8 +189,13 @@
 
 										div2.appendChild(div3);
 									}else{
+									console.log("gif yes");
 										var gif =document.createElement('img');
 										gif.src=chat.gif_src;
+										gif.style.minHeight="100px";
+										gif.style.minWidth="100px";
+										gif.style.maxHeight="500px";
+										gif.style.maxWidth="500px";
 										var br = document.createElement('br');
 										gif.appendChild(br);
 										div2.appendChild(gif);
@@ -246,7 +253,6 @@
 					});
 					 let file=document.getElementById('upload');
 					 file.addEventListener("change",(e)=>{
-						e.preventDefault();
 						const formData = new FormData();
 						const xhr = new XMLHttpRequest();
 						console.log (e.target.files);
@@ -259,6 +265,7 @@
 						};
 						xhr.open('POST','/contents/<%=category%>/room/<%=roomnum%>/picture');
 						xhr.send(formData);
+						e.preventDefault();
 						});
 						
 

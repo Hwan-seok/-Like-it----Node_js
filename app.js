@@ -2,6 +2,7 @@ const createError = require('http-errors'),
 express = require('express'),
 app = express(),
 path = require('path'),
+favicon = require('serve-favicon'),
 cookieParser = require('cookie-parser'),
 logger = require('morgan'),
 server= require('http').createServer(app),
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
+
 app.use(cookieParser());
 
 app.use('/',express.static(path.join(__dirname, 'public')));
@@ -28,6 +30,7 @@ app.use('/contents/:category/makeRoom',express.static(path.join(__dirname, 'publ
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use(favicon(path.join(__dirname,'','favicon.ico')))
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

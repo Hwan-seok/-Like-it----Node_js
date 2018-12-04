@@ -4682,9 +4682,9 @@ a.thumbnail.active {
   padding-left: 0;
   min-height: 300px;
   max-height: 450px;
-  list-style: none;
   overflow-y:scroll;
   overflow-y:auto;
+  list-style: none;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -4895,6 +4895,7 @@ button.list-group-item-danger.active:focus {
 
 .panel-body {
   padding: 15px;
+  
 }
 .panel-body:before, .panel-body:after {
   content: " ";
